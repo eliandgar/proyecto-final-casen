@@ -1,0 +1,12 @@
+
+# Bases de datos originales y procesadas
+data/raw/
+data/processed/
+
+# Archivos temporales de R
+.Rhistory
+.RData
+.Ruserdata
+
+# Archivos internos de RStudio
+.Rproj.user/
