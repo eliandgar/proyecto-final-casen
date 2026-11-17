@@ -1,4 +1,33 @@
 
+## Actividad A5 - Semana 12
+
+Esta actividad realiza limpieza y estadísticas
+descriptivas de la base CASEN reducida en Stata.
+
+### Instrucciones de ejecución
+
+1. Abrir Stata.
+2. Descargar o clonar el repositorio.
+3. Establecer como directorio de trabajo la
+   carpeta principal del proyecto usando cd.
+4. Ejecutar scripts/tarea_a5.do.
+
+### Archivos
+
+- scripts/tarea_a5.do: código de Stata.
+- output/tarea_a5.log: registro de resultados.
+
+### Uso de IA en la Actividad A5
+
+- Herramienta utilizada: GEMINIS
+- Uso: apoyo para comprender comandos de Stata.
+- Trabajo realizado: ejecución de comandos,
+  revisión de resultados y preparación de archivos.
+- Verificación: se ejecutó el do-file completo
+  y se revisaron sus resultados.
+
+
+
 # Proyecto Final - Análisis Económico
 
 ## Tema

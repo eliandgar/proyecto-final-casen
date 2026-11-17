@@ -1,0 +1,199 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\eli\Documents\proyecto-final-casen\output/tarea_a5.log
+  log type:  text
+ opened on:  17 Nov 2026, 20:16:40
+
+. 
+. * 2 -CARGAR LOS DATOS CASEN
+. * ============================================
+. 
+. import delimited "data/raw/casen_reducido.csv", clear varnames(1) encoding("ut
+> f-8")
+(6 vars, 60 obs)
+
+. 
+. describe
+
+Contains data
+ Observations:            60                  
+    Variables:             6                  
+--------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------
+region          str13   %13s                  
+sector          str13   %13s                  
+educ            byte    %8.0g                 
+edad            byte    %8.0g                 
+ingreso         long    %12.0g                
+genero          str1    %9s                   
+--------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      region |          0
+      sector |          0
+        educ |         60    12.73333    3.328697          6         20
+        edad |         60    44.51667    15.15959         20         70
+     ingreso |         55    655290.9    209912.4     180000    1093000
+-------------+---------------------------------------------------------
+      genero |          0
+
+. 
+. * 3 -CREAR VARIABLES
+. * ============================================
+. 
+. * para calcular experiencia laboral potencial
+. generate experiencia = max(edad - educ - 6, 0)
+
+. 
+. * para revisar la nueva variable
+. summarize experiencia
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ experiencia |         60    25.78333     15.3182          0         53
+
+. 
+. * para crear variable indicadora de educación alta
+. generate alta_educ = 0
+
+. 
+. * para asignar 1 a quienes tienen 13 años o más de educación
+. replace alta_educ = 1 if educ >= 13 & !missing(educ)
+(30 real changes made)
+
+. 
+. * para revisar distribución
+. tabulate alta_educ
+
+  alta_educ |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |         30       50.00       50.00
+          1 |         30       50.00      100.00
+------------+-----------------------------------
+      Total |         60      100.00
+
+. 
+. * 4 -ETIQUETAR VARIABLES
+. * ============================================
+. 
+. * etiquetar las variables creadas
+. label variable experiencia "Experiencia potencial (años)"
+
+. label variable alta_educ "Indicador de educación alta"
+
+. 
+. * definir las categorías
+. label define nivel_educ 0 "Menos de 13 años" 1 "13 años o más"
+
+. 
+. * asignar etiquetas a la variable
+. label values alta_educ nivel_educ
+
+. 
+. * revisar los resultados
+. tabulate alta_educ
+
+    Indicador de |
+  educación alta |      Freq.     Percent        Cum.
+-----------------+-----------------------------------
+Menos de 13 años |         30       50.00       50.00
+   13 años o más |         30       50.00      100.00
+-----------------+-----------------------------------
+           Total |         60      100.00
+
+. 
+. * 5 -REVISAR VALORES FALTANTES
+. * ============================================
+. 
+. * contar personas sin ingreso registrado
+. count if missing(ingreso)
+  5
+
+. 
+. * contar ingresos superiores a $500.000
+. * excluyendo valores faltantes
+. count if ingreso > 500000 & !missing(ingreso)
+  41
+
+. 
+. * 6 -ESTADISTICAS DESCRIPTIVAS
+. * ============================================
+. 
+. * Resumen de las variables numericas
+. summarize ingreso educ edad experiencia
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+     ingreso |         55    655290.9    209912.4     180000    1093000
+        educ |         60    12.73333    3.328697          6         20
+        edad |         60    44.51667    15.15959         20         70
+ experiencia |         60    25.78333     15.3182          0         53
+
+. 
+. * Distribucion por sector economico
+. tabulate sector
+
+       sector |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+  Agricultura |         13       21.67       21.67
+     Comercio |          6       10.00       31.67
+ Construcción |          5        8.33       40.00
+    Educación |          8       13.33       53.33
+    Industria |         11       18.33       71.67
+    Servicios |         17       28.33      100.00
+--------------+-----------------------------------
+        Total |         60      100.00
+
+. 
+. * Comparar nivel educativo segun genero
+. tabulate genero alta_educ
+
+           |     Indicador de
+           |    educación alta
+    genero | Menos de   13 años o |     Total
+-----------+----------------------+----------
+         F |        15         14 |        29 
+         M |        15         16 |        31 
+-----------+----------------------+----------
+     Total |        30         30 |        60 
+
+. 
+. * Correlacion entre ingreso, educacion y experiencia
+. correlate ingreso educ experiencia
+(obs=55)
+
+             |  ingreso     educ experi~a
+-------------+---------------------------
+     ingreso |   1.0000
+        educ |   0.6767   1.0000
+ experiencia |  -0.0875  -0.1171   1.0000
+
+
+. 
+. * 7 -INTERPRETACION ECONOMICA
+. * ============================================
+. * En la muestra analizada, el ingreso laboral promedio es de $655.291.
+. * Las personas presentan una escolaridad promedio de 12,73 años.
+. * La experiencia laboral potencial promedio es de 25,78 años.
+. * La correlación entre educación e ingresos es positiva (0,6767).
+. * La experiencia presenta una asociación negativa muy débil con el ingreso (-0
+> ,0875).
+. * Estos resultados muestran asociaciones estadísticas, pero no permiten afirma
+> r causalidad.
+. 
+. * 8 -CERRAR BITACORA
+. * ============================================
+. 
+. log close
+      name:  <unnamed>
+       log:  C:\Users\eli\Documents\proyecto-final-casen\output/tarea_a5.log
+  log type:  text
+ closed on:  17 Nov 2026, 20:16:40
+--------------------------------------------------------------------------------
