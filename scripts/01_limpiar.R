@@ -81,14 +81,12 @@ casen_limpia <- casen |>
     expr > 0
   )
 
+
 # Comparar cantidad de observaciones
 cat("Observaciones iniciales:", n_inicial, "\n")
 cat("Observaciones finales:", nrow(casen_limpia), "\n")
 cat("Observaciones excluidas:",
     n_inicial - nrow(casen_limpia), "\n")
-
-
-# PASO 7: REVISAR VALORES EXTREMOS
 
 # PASO 7: REVISAR VALORES EXTREMOS
 
@@ -105,3 +103,27 @@ quantile(
 # Contar ingresos superiores a 10 millones
 sum(casen_limpia$ytrabajocor > 10000000)
 
+
+# PASO 8: GUARDAR BASE LIMPIA
+
+# Se conservan los ingresos extremos porque
+# no se ha comprobado que sean errores.
+
+# Guardar base para R
+saveRDS(
+  casen_limpia,
+  "data/processed/casen_limpia.rds"
+)
+
+# Guardar base para Stata
+haven::write_dta(
+  casen_limpia,
+  "data/processed/casen_limpia.dta"
+)
+
+# Verificar que los archivos existen
+file.exists("data/processed/casen_limpia.rds")
+file.exists("data/processed/casen_limpia.dta")
+
+# Confirmar dimensiones de la base final
+dim(casen_limpia)

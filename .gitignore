@@ -10,3 +10,6 @@ data/processed/
 
 # Archivos internos de RStudio
 .Rproj.user/
+
+# Archivos temporales de Stata
+*.stswp

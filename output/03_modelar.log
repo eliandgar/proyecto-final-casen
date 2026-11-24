@@ -1,0 +1,159 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\eli\Documents\proyecto-final-casen\output/03_modelar.log
+  log type:  text
+ opened on:  24 Nov 2026, 19:46:04
+
+. 
+. 
+. * 2: CARGAR LA BASE LIMPIA
+. 
+. use "data/processed/casen_limpia.dta", clear
+(Encuesta Casen 2024)
+
+. 
+. * Verificar observaciones y variables
+. describe
+
+Contains data from data/processed/casen_limpia.dta
+ Observations:        98,583                  Encuesta Casen 2024
+    Variables:             7                  24 Nov 2026 19:20
+--------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------
+expr            double  %10.0g                Factor de expansión regional
+varstrat        double  %10.0g                Estratos de varianza
+varunit         double  %16.0g                Conglomerados de varianza
+edad            double  %6.0f                 Edad
+sexo            double  %9.0f      sexo       Sexo
+ytrabajocor     double  %10.0g                Ingreso del trabajo corregido
+esc             double  %9.0g                 Años de escolaridad (edad >= 15)
+--------------------------------------------------------------------------------
+Sorted by: 
+
+. count
+  98,583
+
+. 
+. * 3: REVISAR VARIABLES DEL MODELO
+. 
+. * Verificar categorias de sexo
+. tabulate sexo
+
+       Sexo |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Hombre |     54,057       54.83       54.83
+      Mujer |     44,526       45.17      100.00
+------------+-----------------------------------
+      Total |     98,583      100.00
+
+. 
+. * Revisar escolaridad e ingresos
+. summarize esc edad ytrabajocor
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         esc |     98,583    12.61424    3.729309          0         31
+        edad |     98,583    44.44986    14.23599         18        101
+ ytrabajocor |     98,583    794400.8    869573.2         83   3.91e+07
+
+. 
+. * 4: ESTIMAR MODELO INICIAL
+. 
+. * Regresion de ingreso sobre escolaridad, edad y sexo
+. regress ytrabajocor esc edad i.sexo
+
+      Source |       SS           df       MS      Number of obs   =    98,583
+-------------+----------------------------------   F(3, 98579)     =   8454.70
+       Model |  1.5255e+16         3  5.0849e+15   Prob > F        =    0.0000
+    Residual |  5.9289e+16    98,579  6.0143e+11   R-squared       =    0.2046
+-------------+----------------------------------   Adj R-squared   =    0.2046
+       Total |  7.4544e+16    98,582  7.5616e+11   Root MSE        =    7.8e+05
+
+------------------------------------------------------------------------------
+ ytrabajocor | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         esc |   109833.4   713.0254   154.04   0.000     108435.8    111230.9
+        edad |   8459.486    186.061    45.47   0.000     8094.809    8824.164
+             |
+        sexo |
+      Mujer  |  -264474.8   4988.102   -53.02   0.000    -274251.4   -254698.2
+       _cons |  -847634.2   14513.16   -58.40   0.000    -876079.8   -819188.6
+------------------------------------------------------------------------------
+
+. 
+. * Guardar resultados del modelo
+. estimates store modelo1
+
+. 
+. *El R² es 0,2046, lo que significa que el modelo explica aproximadamente el 20
+> ,46 % de la variación observada en los ingresos laborales.
+. 
+. *en educación un año adicional de escolaridad se asocia con aproximadamente $1
+> 09.833 más de ingreso laboral, manteniendo constantes la edad y el sexo.
+. 
+. * 5: CONFIGURAR DISEÑO MUESTRAL
+. 
+. * Declarar ponderaciones, estratos y conglomerados
+. svyset varunit [pweight=expr], strata(varstrat)
+
+Sampling weights: expr
+             VCE: linearized
+     Single unit: missing
+        Strata 1: varstrat
+ Sampling unit 1: varunit
+           FPC 1: <zero>
+
+. 
+. * Comprobar la configuracion
+. svyset
+
+Sampling weights: expr
+             VCE: linearized
+     Single unit: missing
+        Strata 1: varstrat
+ Sampling unit 1: varunit
+           FPC 1: <zero>
+
+. 
+. * PASO 6: REGRESION CON DISENO MUESTRAL
+. 
+. * Estimar la asociacion entre ingreso,
+. * escolaridad, edad y sexo
+. svy: regress ytrabajocor esc edad i.sexo
+(running regress on estimation sample)
+
+Survey: Linear regression
+
+Number of strata =    756                          Number of obs   =    98,583
+Number of PSUs   = 12,473                          Population size = 9,692,694
+                                                   Design df       =    11,717
+                                                   F(3, 11715)     =   1194.78
+                                                   Prob > F        =    0.0000
+                                                   R-squared       =    0.2120
+
+------------------------------------------------------------------------------
+             |             Linearized
+ ytrabajocor | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         esc |   139788.1   2452.803    56.99   0.000     134980.2      144596
+        edad |   11046.15   414.5579    26.65   0.000     10233.55    11858.76
+             |
+        sexo |
+      Mujer  |  -297697.5   8758.899   -33.99   0.000    -314866.4   -280528.6
+       _cons |   -1265435   40768.14   -31.04   0.000     -1345347    -1185522
+------------------------------------------------------------------------------
+
+. 
+. * Guardar el modelo
+. estimates store modelo_svy
+
+. 
+. * Cerrar registro
+. log close
+      name:  <unnamed>
+       log:  C:\Users\eli\Documents\proyecto-final-casen\output/03_modelar.log
+  log type:  text
+ closed on:  24 Nov 2026, 19:46:06
+--------------------------------------------------------------------------------

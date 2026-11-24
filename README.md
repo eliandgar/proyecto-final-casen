@@ -1,4 +1,4 @@
-
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Actividad A5 - Semana 12
 
 Esta actividad realiza limpieza y estadísticas
@@ -27,7 +27,7 @@ descriptivas de la base CASEN reducida en Stata.
   y se revisaron sus resultados.
 
 
-
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Proyecto Final - Análisis Económico
 
 ## Tema
@@ -116,7 +116,7 @@ El archivo generado se guarda en:
 
 Estos resultados corresponden a la exploración
 inicial del Hito 1.
-
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## T5 – Semana 13: Do-file automatizado
 
 Esta tarea automatiza el análisis de la base CASEN reducida mediante macros, ciclos y un programa reutilizable en Stata.
@@ -136,3 +136,43 @@ Se utilizan regresiones para comparar dos modelos de ingreso laboral y estimar l
 - **Para qué la utilicé:** resolver errores durante la ejecución
 - **Qué hice yo:** trabajé en el editor de Stata, ejecuté los bloques, comprobé las tablas y regresiones, revisé el archivo Excel y realicé las correcciones de las eejecuciones de los comandos.
 - **Verificación:** revisé los resultados obtenidos y puedo explicar los procedimientos y comandos utilizados.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Proyecto Final – Hito 2: Avance
+
+### Objetivo
+
+Analizar la asociación entre los años de escolaridad y los ingresos laborales de personas adultas en Chile, utilizando datos de CASEN 2024.
+
+### Datos
+
+- **Fuente:** Encuesta CASEN 2024, Ministerio de Desarrollo Social y Familia.
+- **Archivo original:** `data/raw/casen_2024.dta`.
+- **Unidad de análisis:** personas de 18 años o más, con información válida de escolaridad e ingresos laborales positivos.
+- **Muestra utilizada:** 98.583 observaciones.
+- **Variables principales:** escolaridad (`esc`), ingreso laboral corregido (`ytrabajocor`), edad (`edad`) y sexo (`sexo`).
+- **Diseño muestral:** factor de expansión `expr`, estratos `varstrat` y conglomerados `varunit`.
+
+### Estructura y ejecución
+
+Los archivos deben ejecutarse desde la carpeta principal del proyecto, en el siguiente orden:
+
+1. `scripts/01_limpiar.R`: lee la base CASEN original, aplica los filtros documentados y genera `casen_limpia.rds` y `casen_limpia.dta` en `data/processed`.
+2. `scripts/02_describir.R`: produce estadísticas descriptivas y guarda `output/tablas/tabla_descriptiva.csv`.
+3. `scripts/03_modelar.do`: estima una regresión inicial y una regresión que considera el diseño muestral de CASEN. Guarda los resultados en `output/03_modelar.log`.
+
+Para ejecutar el proyecto se requiere R con los paquetes `haven` y `dplyr`, además de Stata.
+
+La base original CASEN 2024 debe descargarse desde la fuente oficial y ubicarse como `data/raw/casen_2024.dta`, ya que los archivos de datos originales y procesados no se incluyen en el repositorio.
+
+### Limpieza y criterios de selección
+
+Se seleccionaron personas adultas con ingresos laborales positivos, escolaridad registrada y factor de expansión válido. La muestra pasó de 218.367 a 98.583 observaciones.
+
+Los ingresos excepcionalmente elevados se conservaron porque no se comprobó que correspondieran a errores. Su influencia constituye un aspecto que debe evaluarse al interpretar los resultados.
+
+### Avance del análisis
+
+Se estimó un modelo lineal de ingresos laborales utilizando escolaridad, edad y sexo como variables explicativas, junto con una segunda especificación que incorpora el diseño muestral mediante `svyset` y `svy:` en Stata.
+
+Los resultados representan asociaciones estadísticas y no deben interpretarse como efectos causales. Las estimaciones del diseño muestral son preliminares mientras se revisa el tratamiento de la subpoblación analizada.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
