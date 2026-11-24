@@ -175,4 +175,12 @@ Los ingresos excepcionalmente elevados se conservaron porque no se comprobó que
 Se estimó un modelo lineal de ingresos laborales utilizando escolaridad, edad y sexo como variables explicativas, junto con una segunda especificación que incorpora el diseño muestral mediante `svyset` y `svy:` en Stata.
 
 Los resultados representan asociaciones estadísticas y no deben interpretarse como efectos causales. Las estimaciones del diseño muestral son preliminares mientras se revisa el tratamiento de la subpoblación analizada.
+
+### Declaración de autoría humana y uso de tecnologías digitales emergentes – Hito 2
+
+- **Integrantes y responsabilidades:** Elizabeth Andrades. Desarrollo, ejecución y revisión del análisis de CASEN 2024.
+- **Herramienta de IA utilizada:** ChatGPT.
+- **Para qué se utilizó:**explicación de comandos de R y Stata; resolución de dudas técnicas y revisión de errores.
+- **Qué hice yo:** ejecuté y revisé los códigos en RStudio y Stata, comprobación de los datos y resultados, la verificación la generación de los archivos
+- **Verificación:** los scripts fueron ejecutados y sus resultados comprobados. 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
