@@ -116,3 +116,23 @@ El archivo generado se guarda en:
 
 Estos resultados corresponden a la exploración
 inicial del Hito 1.
+
+## T5 – Semana 13: Do-file automatizado
+
+Esta tarea automatiza el análisis de la base CASEN reducida mediante macros, ciclos y un programa reutilizable en Stata.
+
+Se utilizan regresiones para comparar dos modelos de ingreso laboral y estimar la asociación entre educación e ingresos por sector económico. Los resultados se exportan automáticamente a Excel.
+
+**Archivos de entrega:**
+- `scripts/tarea_t5.do`
+- `output/tarea_t5.log`
+- `output/tarea_t5_por_sector.xlsx`
+
+**Para reutilizar el código:** ejecutar Stata desde la carpeta principal del proyecto y modificar las macros de configuración ubicadas al inicio del do-file. Si se utiliza otra base, verificar que contenga las variables necesarias.
+
+## Declaración de autoría y uso de IA – T5
+
+- **Herramienta utilizada:** ChatGPT.
+- **Para qué la utilicé:** resolver errores durante la ejecución
+- **Qué hice yo:** trabajé en el editor de Stata, ejecuté los bloques, comprobé las tablas y regresiones, revisé el archivo Excel y realicé las correcciones de las eejecuciones de los comandos.
+- **Verificación:** revisé los resultados obtenidos y puedo explicar los procedimientos y comandos utilizados.
